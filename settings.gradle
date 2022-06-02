@@ -1,0 +1,8 @@
+rootProject.name = 'onboarding'
+
+include('authentication-service', 'integration-test', 'onboarding-common-models', 'onboarding-service')
+
+rootProject.children.each { project ->
+    String dir = "projects/$project.name"
+    project.projectDir = new File(settingsDir, dir)
+}
