@@ -1,2 +1,8 @@
 on:
-  job:
+  push:
+    branches-ignore:
+      - production
+      - qa
+
+
+
