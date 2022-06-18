@@ -2,6 +2,7 @@ package com.olyves.authentication.configuration;
 
 import com.olyves.authentication.service.jwt.AuthenticationEntryPointJwt;
 import com.olyves.authentication.service.jwt.AuthenticationTokenFilter;
+import com.olyves.authentication.service.user.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
