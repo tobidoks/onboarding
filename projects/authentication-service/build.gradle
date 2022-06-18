@@ -9,8 +9,9 @@ repositories {
 }
 
 dependencies {
-	implementation project(':onboarding-common-models')
+	implementation project(':onboarding-commons')
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

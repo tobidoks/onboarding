@@ -1,6 +1,6 @@
 rootProject.name = 'onboarding'
 
-include('authentication-service', 'integration-test', 'onboarding-common-models', 'onboarding-service')
+include('authentication-service', 'integration-test', 'onboarding-commons', 'onboarding-service')
 
 rootProject.children.each { project ->
     String dir = "projects/$project.name"
