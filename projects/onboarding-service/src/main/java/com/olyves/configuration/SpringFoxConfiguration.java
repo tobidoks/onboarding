@@ -28,8 +28,8 @@ public class SpringFoxConfiguration extends WebMvcConfigurerAdapter {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Olyves Authentication API")
-                .description("This API is used to authenticate employees")
+                .title("Olyves Onboarding API")
+                .description("This API is used to onboard & update companies and employees")
                 .version("V1.0")
                 .build();
     }
