@@ -1,4 +1,4 @@
-package com.olyves.configuration;
+package com.olyves.onboarding.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

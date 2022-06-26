@@ -51,5 +51,4 @@ public class UserRole {
     @ToString.Exclude
     private Set<User> users;
 
-
 }

@@ -26,19 +26,21 @@ public class UserAuthenticationManager {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    private final UserRole roleRepository;
 
     private final PasswordEncoder encoder;
 
-
-    public UserAuthenticationManager(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
+    public UserAuthenticationManager(AuthenticationManager authenticationManager,
+                                     JwtUtils jwtUtils,
+                                     UserRepository userRepository,
+                                     RoleRepository roleRepository,
+                                     PasswordEncoder encoder) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
     }
-
 
     public MessageResponse authenticateUserSignUp(SignUpRequest signUpRequest) {
         String password = signUpRequest.getPassword();
@@ -60,7 +62,6 @@ public class UserAuthenticationManager {
         log.info("User with username {} has been registered successfully", username);
         return new MessageResponse("User Registered Successfully!", HttpStatus.OK);
     }
-
 
     public UserRole getRole(String requestRole) {
         Set<Role> roles = new HashSet<>();
