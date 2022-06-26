@@ -1,5 +1,6 @@
 package com.olyves.authentication.service.jwt;
 
+import com.olyves.authentication.service.user.UserDetailsServiceImpl;
 import com.olyves.authentication.util.JwtUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
