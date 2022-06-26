@@ -1,14 +1,11 @@
 package com.olyves.authentication.util;
 
-
 import com.olyves.authentication.dao.UserRepository;
 import com.olyves.authentication.service.user.UserDetailsImpl;
 import com.olyves.onboarding.common.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

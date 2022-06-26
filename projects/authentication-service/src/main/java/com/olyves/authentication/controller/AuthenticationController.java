@@ -19,6 +19,9 @@ public class AuthenticationController {
 
     @PostMapping("sign-up")
     public ResponseEntity<?> signUp(@Validated @RequestBody SignUpRequest signUpRequest) {
+        //todo add client http interceptor on every request
+
+
 
 
     }
