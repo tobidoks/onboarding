@@ -1,5 +1,6 @@
 package com.olyves.authentication.service.jwt;
 
+import com.olyves.authentication.service.user.UserDetailsServiceImpl;
 import com.olyves.authentication.util.JwtUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            logger.error("Cannot set user authentication", e);
+            logger.error("Unable to set user authentication", e);
         }
 
         filterChain.doFilter(request, response);

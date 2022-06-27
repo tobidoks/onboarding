@@ -1,6 +1,5 @@
 package com.olyves.authentication.payload.request;
 
-import com.olyves.onboarding.common.model.enums.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

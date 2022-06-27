@@ -30,7 +30,7 @@ public class UserUtils {
             }
             return user;
         } catch (Exception e) {
-            log.error("Error while retrieving user from authentication");
+            log.error("Error while retrieving user from authentication", e);
         }
         return null;
     }

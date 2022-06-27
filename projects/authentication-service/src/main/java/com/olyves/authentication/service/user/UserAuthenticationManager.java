@@ -2,12 +2,12 @@ package com.olyves.authentication.service.user;
 
 import com.olyves.authentication.dao.UserRepository;
 import com.olyves.authentication.dao.UserRoleRepository;
+import com.olyves.authentication.exception.AuthenticationException;
 import com.olyves.authentication.payload.request.SignUpRequest;
 import com.olyves.authentication.util.JwtUtils;
 import com.olyves.onboarding.common.model.User;
 import com.olyves.onboarding.common.model.UserRole;
 import com.olyves.onboarding.common.model.enums.Role;
-import com.olyves.onboarding.common.model.enums.user.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
@@ -45,14 +45,13 @@ public class UserAuthenticationManager {
         this.encoder = encoder;
     }
 
-    public MessageResponse authenticateUserSignUp(SignUpRequest signUpRequest) {
+    public void authenticateUserSignUp(SignUpRequest signUpRequest) throws AuthenticationException {
         String password = signUpRequest.getPassword();
         String email = signUpRequest.getEmail();
         Set<String> requestRoles = signUpRequest.getRoles();
 
         if (userRepository.existsByEmail(email)) {
-            log.error("Email address {} already exits", email);
-            return new MessageResponse("Email already exists", HttpStatus.BAD_REQUEST);
+            throw new AuthenticationException(String.format("Email address %s already exits", email));
         }
 
         User.UserBuilder builder = User.builder();
@@ -64,7 +63,6 @@ public class UserAuthenticationManager {
         builder.userRoles(userRoles);
         userRepository.save(builder.build());
         log.info("User with email {} has been registered successfully", email);
-        return new MessageResponse("User Registered Successfully!", HttpStatus.OK);
     }
 
     public Set<UserRole> getRoles(Set<String> requestRoles) {
