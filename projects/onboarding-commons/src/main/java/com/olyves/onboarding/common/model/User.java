@@ -15,13 +15,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -29,9 +30,8 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
-@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,8 +47,8 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id")
-    private UserRole userRole;
+    private Set<UserRole> userRoles;
 
 }

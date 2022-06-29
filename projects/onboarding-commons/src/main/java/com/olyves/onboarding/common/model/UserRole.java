@@ -1,7 +1,6 @@
 package com.olyves.onboarding.common.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.olyves.onboarding.common.model.enums.user.Role;
+import com.olyves.onboarding.common.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
@@ -27,14 +26,13 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
-@Table(name = "user_role")
+@Table(name = "role")
 public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_role_id", nullable = false)
+    @Column(name = "role_id", nullable = false)
     private Integer id;
 
     @Enumerated(EnumType.STRING)
@@ -46,10 +44,8 @@ public class UserRole {
 
     // Good video to understand https://www.youtube.com/watch?v=f5bdUjEIbrg&t=1s
     // https://www.baeldung.com/jpa-one-to-one
-    @JsonIgnore
-    @OneToMany(mappedBy = "userRole")
+    @ManyToMany(mappedBy = "userRoles")
     @ToString.Exclude
     private Set<User> users;
-
 
 }

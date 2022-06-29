@@ -1,17 +1,20 @@
 package com.olyves.authentication.service.user;
 
 import com.olyves.authentication.dao.UserRepository;
+import com.olyves.authentication.dao.UserRoleRepository;
+import com.olyves.authentication.exception.AuthenticationException;
 import com.olyves.authentication.payload.request.SignUpRequest;
 import com.olyves.authentication.util.JwtUtils;
 import com.olyves.onboarding.common.model.User;
 import com.olyves.onboarding.common.model.UserRole;
-import com.olyves.onboarding.common.model.enums.user.Role;
+import com.olyves.onboarding.common.model.enums.Role;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -26,12 +29,15 @@ public class UserAuthenticationManager {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    private final UserRoleRepository roleRepository;
 
     private final PasswordEncoder encoder;
 
-
-    public UserAuthenticationManager(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
+    public UserAuthenticationManager(AuthenticationManager authenticationManager,
+                                     JwtUtils jwtUtils,
+                                     UserRepository userRepository,
+                                     UserRoleRepository roleRepository,
+                                     PasswordEncoder encoder) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
@@ -39,55 +45,51 @@ public class UserAuthenticationManager {
         this.encoder = encoder;
     }
 
-
-    public MessageResponse authenticateUserSignUp(SignUpRequest signUpRequest) {
+    public void authenticateUserSignUp(SignUpRequest signUpRequest) throws AuthenticationException {
         String password = signUpRequest.getPassword();
         String email = signUpRequest.getEmail();
-        Role requestRole = signUpRequest.getRole();
+        Set<String> requestRoles = signUpRequest.getRoles();
 
         if (userRepository.existsByEmail(email)) {
-            log.error("Email address {} already exits", email);
-            return new MessageResponse("Email already exists", HttpStatus.BAD_REQUEST);
+            throw new AuthenticationException(String.format("Email address %s already exits", email));
         }
 
         User.UserBuilder builder = User.builder();
-        builder.email(email).password(encoder.encode(password));
+        builder.email(email)
+                .password(encoder.encode(password));
 
-        UserRole userRole = getRole(requestRole);
+        Set<UserRole> userRoles = getRoles(requestRoles);
 
-        builder.userRole(userRole);
+        builder.userRoles(userRoles);
         userRepository.save(builder.build());
-        log.info("User with username {} has been registered successfully", username);
-        return new MessageResponse("User Registered Successfully!", HttpStatus.OK);
+        log.info("User with email {} has been registered successfully", email);
     }
 
+    public Set<UserRole> getRoles(Set<String> requestRoles) {
+        Set<UserRole> userRoles = new HashSet<>();
 
-    public UserRole getRole(String requestRole) {
-        Set<Role> roles = new HashSet<>();
-
-        //todo customize the role on the user table to have all the roles
-        if (ObjectUtils.isEmpty(requestRole)) {
-            Optional<Role> role = roleRepository.findByName(URole.USER);
-            if (role.isEmpty()) {
-                log.error("USER role not found in db");
+        if (CollectionUtils.isEmpty(requestRoles)) {
+            Optional<UserRole> userRole = roleRepository.findByName(Role.CLIENT_EMPLOYEE);
+            if (userRole.isEmpty()) {
+                log.error("CLIENT EMPLOYEE userRole not found in db");
             } else {
-                roles.add(role.get());
+                userRoles.add(userRole.get());
             }
         } else {
-            for (String r : requestRole) {
-                if (!roleNameToURole.containsKey(r)) {
+            for (String r : requestRoles) {
+                if (EnumUtils.isValidEnum(Role.class, r)) {
                     log.debug("{} role not recognized", r);
                     continue;
                 }
-                Optional<Role> role = roleRepository.findByName(roleNameToURole.get(r));
-                if (role.isEmpty()) {
+                Optional<UserRole> userRole = roleRepository.findByName(EnumUtils.getEnum(Role.class, r));
+                if (userRole.isEmpty()) {
                     log.error("{} role not found in db", r);
                     continue;
                 }
-                roles.add(role.get());
+                userRoles.add(userRole.get());
             }
         }
-        return roles;
+        return userRoles;
     }
 
 }

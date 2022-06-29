@@ -26,9 +26,6 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private int jwtExpiration;
 
-    @Value("${jwt.refreshExpiration}")
-    private int jwtRefreshExpiration;
-
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -38,10 +35,6 @@ public class JwtUtils {
 
     public String generateJwtToken(String username) {
         return Jwts.builder().setSubject(username).setIssuedAt(new Date()).setExpiration(new Date((new Date()).getTime() + jwtExpiration)).signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
-    }
-
-    public int getRefreshExpiration() {
-        return jwtRefreshExpiration;
     }
 
     public String getUserNameFromJwtToken(String token) {
