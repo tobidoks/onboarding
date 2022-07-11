@@ -11,7 +11,6 @@ import com.olyves.onboarding.common.model.enums.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,7 @@ import java.util.Set;
 @Service
 @Slf4j
 public class UserAuthenticationManager {
+
     private final AuthenticationManager authenticationManager;
 
     private final JwtUtils jwtUtils;
@@ -65,7 +65,7 @@ public class UserAuthenticationManager {
         log.info("User with email {} has been registered successfully", email);
     }
 
-    public Set<UserRole> getRoles(Set<String> requestRoles) {
+    private Set<UserRole> getRoles(Set<String> requestRoles) {
         Set<UserRole> userRoles = new HashSet<>();
 
         if (CollectionUtils.isEmpty(requestRoles)) {

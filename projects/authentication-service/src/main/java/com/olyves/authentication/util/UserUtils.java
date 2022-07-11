@@ -3,6 +3,7 @@ package com.olyves.authentication.util;
 import com.olyves.authentication.dao.UserRepository;
 import com.olyves.authentication.service.user.UserDetailsImpl;
 import com.olyves.onboarding.common.model.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,12 +13,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserUtils {
     private final UserRepository userRepository;
-
-    public UserUtils(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public User getUser() {
         try {

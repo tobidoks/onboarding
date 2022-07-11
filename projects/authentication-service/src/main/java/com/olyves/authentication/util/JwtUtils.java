@@ -1,12 +1,8 @@
 package com.olyves.authentication.util;
 
 import com.olyves.authentication.service.user.UserDetailsImpl;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -18,6 +14,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
+@NoArgsConstructor
 public class JwtUtils {
 
     @Value("${jwt.secret}")
@@ -27,10 +24,8 @@ public class JwtUtils {
     private int jwtExpiration;
 
     public String generateJwtToken(Authentication authentication) {
-
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
-        return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date()).setExpiration(new Date((new Date()).getTime() + jwtExpiration)).signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+        return generateJwtToken(userPrincipal.getUsername());
     }
 
     public String generateJwtToken(String username) {
