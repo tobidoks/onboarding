@@ -19,10 +19,13 @@ public class UserUtils {
 
     public User getUser() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Authentication authentication = SecurityContextHolder
+                    .getContext()
+                    .getAuthentication();
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication
+                    .getPrincipal();
             String email = userDetails.getEmail();
-            User user = userRepository.findByEmail(email).orElse(null);
+            User user = userRepository.findByEmail().orElse(null);
             if (ObjectUtils.isEmpty(user) && StringUtils.isNotBlank(email)) {
                 log.warn("Could not retrieve {} from database", email);
             }

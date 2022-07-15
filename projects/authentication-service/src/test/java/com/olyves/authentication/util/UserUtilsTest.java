@@ -49,7 +49,7 @@ public class UserUtilsTest {
     @Test
     public void shouldGetUser() {
         //Arrange
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail()).thenReturn(Optional.of(user));
         //Act
         User result = underTest.getUser();
         //Assert
@@ -59,7 +59,7 @@ public class UserUtilsTest {
     @Test
     public void shouldReturnNullOnNullUser() {
         //Arrange
-        when(userRepository.findByEmail(email)).thenReturn(null);
+        when(userRepository.findByEmail()).thenReturn(null);
         //Act
         User result = underTest.getUser();
         //Assert
