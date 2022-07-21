@@ -33,11 +33,7 @@ public class UserAuthenticationManager {
 
     private final PasswordEncoder encoder;
 
-    public UserAuthenticationManager(AuthenticationManager authenticationManager,
-                                     JwtUtils jwtUtils,
-                                     UserRepository userRepository,
-                                     UserRoleRepository roleRepository,
-                                     PasswordEncoder encoder) {
+    public UserAuthenticationManager(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserRepository userRepository, UserRoleRepository roleRepository, PasswordEncoder encoder) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
@@ -77,7 +73,7 @@ public class UserAuthenticationManager {
             }
         } else {
             for (String r : requestRoles) {
-                if (EnumUtils.isValidEnum(Role.class, r)) {
+                if (!EnumUtils.isValidEnum(Role.class, r)) {
                     log.debug("{} role not recognized", r);
                     continue;
                 }

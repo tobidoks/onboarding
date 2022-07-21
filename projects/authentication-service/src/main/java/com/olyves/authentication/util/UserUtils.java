@@ -25,7 +25,7 @@ public class UserUtils {
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication
                     .getPrincipal();
             String email = userDetails.getEmail();
-            User user = userRepository.findByEmail().orElse(null);
+            User user = userRepository.findByEmail(email).orElse(null);
             if (ObjectUtils.isEmpty(user) && StringUtils.isNotBlank(email)) {
                 log.warn("Could not retrieve {} from database", email);
             }

@@ -1,6 +1,7 @@
 package com.olyves.authentication.payload.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class SignUpRequest {
 
     @NotBlank
